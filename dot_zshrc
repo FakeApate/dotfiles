@@ -1,0 +1,24 @@
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=3000
+SAVEHIST=1000
+setopt nomatch
+unsetopt autocd beep extendedglob notify
+bindkey -v
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/sam/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/catppuccin_macchiato.omp.json)"
+alias ll="ls -lah"
+
