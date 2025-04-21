@@ -54,6 +54,16 @@ font pango:monospace 8
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
 
+# Set up SSH agent and load OpenPGP smartcard
+exec_always --no-startup-id export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+exec --no-startup-id ssh-agent -a "$SSH_AUTH_SOCK"
+exec --no-startup-id ssh-add -s /usr/lib64/opensc-pkcs11.so
+
+# Start GNOME Keyring (without SSH component)
+#exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets
+exec_always --no-startup-id export QT_QPA_PLATFORM=xcb
+
+
 gaps inner 12
 gaps outer 1
 
