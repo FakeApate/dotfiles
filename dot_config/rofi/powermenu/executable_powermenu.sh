@@ -42,6 +42,9 @@ confirm_cmd() {
 	rofi -dmenu \
 		-p 'Confirmation' \
 		-mesg 'Are you Sure?' \
+        -hover-select \
+        -me-select-entry '' \
+        -me-accept-entry MousePrimary \
 		-theme ${dir}/shared/confirm.rasi
 }
 
