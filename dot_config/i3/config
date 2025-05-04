@@ -36,35 +36,24 @@ client.background        $base
 
 font pango:JetBrainsMono 8
 
-gaps inner 12
-gaps outer 1
+gaps inner 24
+gaps outer 4
 
-exec --no-startup-id dex-autostart --autostart --environment i3
+exec --no-startup-id plasma_waitforname org.kde.plasmashell
 exec --no-startup-id xrandr --output DP-2 --primary --mode 2560x1440 --pos 1440x1120 --rotate normal --rate 143.91 --output DP-4 --mode 2560x1440 --pos 0x0 --rotate left --rate 144.01
-exec --no-startup-id /home/sam/.config/polybar/launch.sh
-exec --no-startup-id picom
-exec --no-startup-id feh --image-bg "#1b1923" --bg-center /home/$USER/Pictures/windows-error.jpg /home/$USER/Pictures/unicat.png
-exec --no-startup-id xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock --nofork
-exec --no-startup-id 1password --silent
-exec --no-startup-id nm-applet
 
-set $refresh_i3status killall -SIGUSR1 i3status
+exec --no-startup-id feh --image-bg "#1b1923" --bg-center /home/$USER/Pictures/windows-error.jpg /home/$USER/Pictures/unicat.png
 
 floating_modifier $mod
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec systemd-run-i3 -n kitty
 bindsym $mod+Shift+q kill
-
-#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && $refresh_i3status
-#bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && $refresh_i3status
-#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-#bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 bindsym XF86AudioRaiseVolume exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "increase_volume"
 bindsym XF86AudioLowerVolume exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "decrease_volume"
 bindsym XF86AudioMute exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "mute"
 bindsym XF86AudioMicMute exec --no-startup-id qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "mic_mute"
 
-bindsym $mod+space exec "rofi -modi drun,run -show drun -hover-select -me-select-entry '' -me-accept-entry MousePrimary"
+bindsym $mod+space exec "pkill rofi; rofi -modi drun,run -show drun -hover-select -me-select-entry '' -me-accept-entry MousePrimary -run-command 'systemd-run-i3 -n {cmd}'"
 
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
@@ -125,9 +114,8 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
-bindsym $mod+Shift+e exec "$HOME/.config/rofi/powermenu/powermenu.sh"
-#bindsym $mod+Shift+e exec --no-startup-id qdbus org.kde.LogoutPrompt /LogoutPrompt org.kde.LogoutPrompt.promptAll
-
+#bindsym $mod+Shift+e exec "$HOME/.config/rofi/powermenu/powermenu.sh"
+bindsym $mod+Shift+e exec --no-startup-id qdbus-qt6 org.kde.LogoutPrompt /LogoutPrompt org.kde.LogoutPrompt.promptAll
 mode "resize" {
         bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Down resize grow height 10 px or 10 ppt
@@ -154,7 +142,7 @@ for_window [class="krunner"] floating enable, border none
 for_window [class="Kmix"] floating enable, border none
 for_window [class="Klipper"] floating enable, border none
 for_window [class="Plasmoidviewer"] floating enable, border none
-for_window [class="(?i)*nextcloud*"] floating disable
+for_window [class="(?i).*nextcloud.*"] floating disable
 for_window [class="plasmashell" window_type="notification"] border none, move position 70 ppt 81 ppt
 no_focus [class="plasmashell" window_type="notification"]
 
